@@ -6,14 +6,38 @@
 void arrayRotator(int* intArr, int intArr_N, int& rotation)
 {
     int* tmp = new int[intArr_N];
-    for (int i{ 0 }; i < intArr_N; ++i)
+    if (rotation < 0)
     {
-        if (i + rotation < intArr_N)
+        // we cut the front and shift to end
+        rotation = -rotation;
+        for (int i{ 0 }; i < intArr_N; ++i)
         {
-            tmp[i] = intArr[(i + rotation)];
+            if (i + rotation < intArr_N)
+            {
+                tmp[i] = intArr[(i + rotation)];
+            }
+            else {
+                tmp[i] = intArr[(i + rotation) % intArr_N];
+            }
         }
-        else {
-            tmp[i] = intArr[(i + rotation) % intArr_N];
+            
+    }
+    else if  (rotation == 0)
+    {
+        return ;
+    }
+    else
+    {
+        // we cut the end and shift to front
+        for (int i{ 0 }; i < intArr_N; ++i)
+        {
+            if ((intArr_N - rotation) + i < intArr_N)
+            {
+                tmp[i] = intArr[(intArr_N - rotation) + i];
+            }
+            else {
+                tmp[i] = intArr[((intArr_N - rotation) + i) % intArr_N];
+            }
         }
     }
     for (int i{ 0 }; i < intArr_N; ++i)
@@ -47,11 +71,17 @@ int main()
 {
     int N{ 20 };
     int* intArr = new int[N] {};
-    int N_shift{ 10 };
+    int N_shift{ 5 };
 
     fillIntArr_linear(intArr, N, 1);
 
     showIntArr(intArr, N);
+
+    arrayRotator(intArr, N, N_shift);
+
+    showIntArr(intArr, N);
+
+    N_shift = -N_shift;
 
     arrayRotator(intArr, N, N_shift);
 
